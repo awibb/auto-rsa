@@ -16,3 +16,9 @@ setuptools==74.0.0
 tastytrade==8.2
 vanguard-api==0.2.5
 -e git+https://github.com/NelsonDane/webull.git@ef14ae63f9e1436fbea77fe864df54847cf2f730#egg=webull
+streamlit==1.38.0
+pandas==2.2.2
+streamlit_extras==0.4.7
+streamlit_authenticator==0.3.3
+pyyaml==6.0.2
+
