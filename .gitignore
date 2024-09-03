@@ -10,3 +10,5 @@ test*
 *venv/
 .vscode/
 *.zip
+output.csv
+config.yaml
