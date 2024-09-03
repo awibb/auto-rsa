@@ -151,17 +151,18 @@ def validate_input(brokers,tickers,side,amt):
 
 # Main function for Streamlit app
 def main():
-    # Define file path for persistent storage
     load_dotenv()
-    if not os.getenv("OUTPUT_PATH"):
-        st.error("Output Path not found, skipping...")
-        return
-    file_path =  os.environ["OUTPUT_PATH"]
     with open('./config.yaml') as file:
         config = yaml.load(file, Loader=SafeLoader)
 
     # Pre-hashing all plain text passwords once
     # Hasher.hash_passwords(config['credentials'])
+    st.set_page_config(
+    page_title="auto-rsa-ui",  
+    page_icon="🚀",               
+    layout="centered",            
+    initial_sidebar_state="auto" 
+)
     
     authenticator = stauth.Authenticate(
         config['credentials'],
@@ -174,6 +175,11 @@ def main():
 
 
     if st.session_state['authentication_status']:
+    # Define file path for persistent storage
+        if not os.getenv("OUTPUT_PATH"):
+            st.error("Output Path not found, skipping...")
+            return
+        file_path =  os.environ["OUTPUT_PATH"]
         
         st.write(f'Welcome *{st.session_state["name"]}*')
 
