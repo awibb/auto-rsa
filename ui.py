@@ -80,7 +80,7 @@ def handle_transaction(side,amt,tickers,brokers,dry):
         line = line.strip()
         if line:
             print(line)  # Print output to the console
-            stdout_lines.append(line)
+            # stdout_lines.append(line)
             
             # Start capturing after a specific message
             if "Running bot from command line" in line:
