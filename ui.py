@@ -194,7 +194,7 @@ def main():
             
             # Sync button
             with sync_coll:
-                if st.button("Sync", use_container_width=True):
+                if st.button("Sync Dependicies", use_container_width=True):
                     handle_sync()
             
             # Logout button
