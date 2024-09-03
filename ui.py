@@ -57,7 +57,7 @@ def handle_transaction(side,amt,tickers,brokers,dry):
     script_path = os.environ["SCRIPT_PATH"]
 
     # Prepare arguments for the subprocess
-    args = [side, amt,",".join(tickers), ",".join(brokers),dry]
+    args = [side, str(amt),",".join(tickers),",".join(brokers),str(dry)]
     print(f"Arguments: {args}")
     # x = ["python", script_path] + args,
     # print(x)
@@ -196,7 +196,7 @@ def main():
             # Broker and Ticker inputs
             options = st.multiselect(
                 "Select broker(s)",
-                ["All", "Most", "Day1", "Fennel", "Chase", "Fidelity", "FirstTrade", "Public", "Robinhood", "Schwab", "TastyTrade", "Tornado", "Tradier", "Vanguard", "Webull"],
+                ["All", "Most", "Day1", "Fennel", "Chase", "Fidelity", "Firstrade", "Public", "Robinhood", "Schwab", "TastyTrade", "Tornado", "Tradier", "Vanguard", "Webull"],
             )
             tickers = st.text_input("Ticker(s)")
             quantity = st.number_input("Quantity", step=1, value=1, help='The number of shares you want to buy/sell.')
@@ -247,7 +247,11 @@ def main():
                 if not validate[0]:
                     st.warning(validate[1],icon="⚠️")
                 if validate[0]:
-                    handle_transaction(validate[3],validate[4],validate[2],validate[1],dry_mode)
+                    output, errors = handle_transaction(validate[3],validate[4],validate[2],validate[1],dry_mode)
+                    df_output = pd.DataFrame(output, columns=['Output'])
+                    df_err = pd.DataFrame(errors, columns=['Error'])
+                    st.session_state.df_std_output = pd.concat([st.session_state.df_std_output, df_output, df_err], ignore_index=True)
+                    save_to_csv(st.session_state.df_std_output, file_path)
                     st.info("buy")
 
             with sell_col:
@@ -264,6 +268,11 @@ def main():
                 if not validate[0]:
                     st.warning(validate[1],icon="⚠️")
                 if validate[0]:
+                    output, errors = handle_transaction(validate[3],validate[4],validate[2],validate[1],dry_mode)
+                    df_output = pd.DataFrame(output, columns=['Output'])
+                    df_err = pd.DataFrame(errors, columns=['Error'])
+                    st.session_state.df_std_output = pd.concat([st.session_state.df_std_output, df_output, df_err], ignore_index=True)
+                    save_to_csv(st.session_state.df_std_output, file_path)
                     st.info("sell")
 
         # Display current DataFrame
