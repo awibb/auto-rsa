@@ -9,6 +9,18 @@ from yaml.loader import SafeLoader
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+st.set_page_config(
+    page_title="auto-rsa-ui",  
+    page_icon="🚀",               
+    layout="centered",            
+    initial_sidebar_state="auto",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
+)
+
 # Function to save DataFrame to a CSV file
 def save_to_csv(df, file_path):
     try:
@@ -180,17 +192,6 @@ def main():
 
     # Pre-hashing all plain text passwords once
     # Hasher.hash_passwords(config['credentials'])
-    st.set_page_config(
-    page_title="patriot-trader-1776",  
-    page_icon="🚀",               
-    layout="centered",            
-    initial_sidebar_state="auto",
-    menu_items={
-        'Get Help': 'https://www.extremelycoolapp.com/help',
-        'Report a bug': "https://www.extremelycoolapp.com/bug",
-        'About': "# This is a header. This is an *extremely* cool app!"
-    }
-)
     
     authenticator = stauth.Authenticate(
         config['credentials'],
