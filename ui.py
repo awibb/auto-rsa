@@ -8,6 +8,7 @@ import yaml
 from yaml.loader import SafeLoader
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 st.set_page_config(
     page_title="auto-rsa-ui",  
@@ -25,19 +26,19 @@ st.set_page_config(
 def save_to_csv(df, file_path):
     try:
         df.to_csv(file_path, index=False)
-        st.write(f"Data saved successfully to {file_path}")
+        print(f"Data saved successfully to {file_path}")
     except Exception as e:
-        st.error(f"Error saving to CSV: {e}")
+        print(f"Error saving to CSV: {e}")
 
 # Function to load DataFrame from a CSV file
 def load_from_csv(file_path):
     if os.path.exists(file_path):
         try:
             df = pd.read_csv(file_path)
-            # st.write(f"Loaded data from {file_path}")
+            print(f"Loaded data from {file_path}")
             return df
         except Exception as e:
-            st.error(f"Error loading CSV: {e}")
+            print(f"Error loading CSV: {e}")
             return pd.DataFrame()
     else:
         st.write(f"No CSV file found at {file_path}. Starting with an empty DataFrame.")
@@ -209,12 +210,14 @@ def main():
             st.error("Output Path not found, skipping...")
             return
         file_path =  os.environ["OUTPUT_PATH"]
+        if 'df_std_output' not in st.session_state:
+            st.session_state.df_std_output = load_from_csv(file_path)
+            
+    
         
         st.write(f'Welcome *{st.session_state["name"]}*')
 
         # Load existing DataFrame or initialize a new one
-        if 'df_std_output' not in st.session_state:
-            st.session_state.df_std_output = load_from_csv(file_path)
         
         # Sidebar elements
         with st.sidebar:
@@ -364,9 +367,12 @@ def main():
         # Display current DataFrame
         if not st.session_state.df_std_output.empty:
             st.dataframe(st.session_state.df_std_output, use_container_width=True)
+        else:
             
-            if st.button(label="Clear Logs", type="primary"):
-                clear_csv(file_path)
+            st.error("Error loading CSV: "+ file_path)
+            
+        if st.button(label="Clear Logs", type="primary"):
+            clear_csv(file_path)
         st.image(image='https://i.gyazo.com/620b1e529fe0b4425cbaff3e67776386.png')
         
 if __name__ == "__main__":
