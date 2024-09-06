@@ -367,13 +367,11 @@ def main():
         # Display current DataFrame
         if not st.session_state.df_std_output.empty:
             st.dataframe(st.session_state.df_std_output, use_container_width=True)
+            if st.button(label="Clear Logs", type="primary"):
+                clear_csv(file_path)
+        
         else:
-            
             st.error("Error loading CSV: "+ file_path)
             
-        if st.button(label="Clear Logs", type="primary"):
-            clear_csv(file_path)
-        st.image(image='https://i.gyazo.com/620b1e529fe0b4425cbaff3e67776386.png')
-        
 if __name__ == "__main__":
     main()
